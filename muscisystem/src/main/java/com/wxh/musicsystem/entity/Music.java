@@ -1,10 +1,13 @@
 package com.wxh.musicsystem.entity;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import java.sql.Date;//确保格式正确
 
 @Data
 @Entity
@@ -16,7 +19,9 @@ public class Music {
     private String musicname;//音乐名称
     private String musicauthor;//音乐作者
     private String musictype;//音乐类型
-    private String data;//发行日期
+    @NotNull(message = "日期不能为空")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date data;//发行日期
     private boolean status;//是否添加
 
     //必须要有构造函数

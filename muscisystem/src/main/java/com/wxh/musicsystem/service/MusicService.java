@@ -30,14 +30,14 @@ public class MusicService {
         musicA.setMusicauthor("邓悦");
         musicA.setMusicname("大耳朵图图");
         musicA.setMusictype("儿童");
-        musicA.setData("2019/10/27");
+//        musicA.setData("2019/10/27");
         musicA.setStatus(true);
         musicRepository.saveAndFlush(musicA);
         Music musicB = new Music();
         musicB.setMusicauthor("汪骁虎");
         musicB.setMusicname("那个男人");
         musicB.setMusictype("流行音乐");
-        musicB.setData("2019/10/27");
+//        musicB.setData("2019/10/27");
         musicB.setId(1);
         musicB.setStatus(true);
         musicRepository.saveAndFlush(musicB);
