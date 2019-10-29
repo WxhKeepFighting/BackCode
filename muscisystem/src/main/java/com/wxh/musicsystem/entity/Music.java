@@ -21,7 +21,7 @@ public class Music {
     private String musictype;//音乐类型
     @NotNull(message = "日期不能为空")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date data;//发行日期
+    private Date release_date;//发行日期
     private boolean status;//是否添加
 
     //必须要有构造函数
