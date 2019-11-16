@@ -1,78 +1,78 @@
 package com.wxh.musicsystem_teacher.Controller;
 
 import com.wxh.musicsystem_teacher.Entity.Music;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*不能用@Controller？？为什么*/
-@RestController
+@RestController//400异常
 @CrossOrigin//实现跨域访问
 public class MusicController_T {
 
     private List<Music> musicList = new ArrayList<>();
+    private MusicService musicService = new MusicService();
 
-    public MusicController_T(){
-        musicList.add(new Music(1,"hello","wxh","oldmusic","2019-11-8"));
+    @Autowired//可以省略
+    public MusicController_T(MusicService musicService){
+        this.musicService = musicService;
+        musicList.add(new Music(1,"hello","wxh",false, "好听的歌", LocalDate.now(),null));
+        musicList.add(new Music(2,"hello2","wxh2",false,"好听的歌", LocalDate.now(),null));
     }
 
-    @GetMapping("/musics")//得到数据
+    @GetMapping("/musics")//API命名方式
     public List<Music> findAll(){
         return musicList;
     }
 
     @PostMapping("/musics")
-    public void create(@RequestBody Music oldMusic){
-        musicList.add(oldMusic);
+    public ResponseEntity<Object> create(@Valid Music music, Errors errors){
+        if (errors.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getFieldErrors());
+        }
+        System.out.println(music.getId()+music.getMusicname());
+        musicList.add(music);
         System.out.println("添加数据成功");
+        return ResponseEntity.status(HttpStatus.CREATED).body(music.getFile());
     }
 
-//    @PostMapping("/musics")//添加数据
-//    public void create(@RequestParam String Musicauthor,
-//                       @RequestParam String Musicname,
-//                       @RequestParam String Data,
-//                       @RequestParam String Musictype,
-//                       @RequestParam boolean Status,
-//                       @RequestParam int Id){
-//        Music music = new Music();
-//        music.setData(Data);
-//        music.setId(Id);
-//        music.setMusicauthor(Musicauthor);
-//        music.setMusicname(Musicname);
-//        music.setMusictype(Musictype);
-//        music.setStatus(Status);
-//        musicList.add(music);
-//    }
-
     @PutMapping("/musics/{id}")//修改数据
-    public void updata(@PathVariable int id, @RequestBody Music newMusic){
+    public void update(@PathVariable int id, @RequestBody Music newMusic){
         //先找到老数据
         Music music = musicList.stream().filter(
                 (music1) -> music1.getId() == id
         ).findFirst().orElse(null);
 
-        //在旧的数据不为空的情况下，然后再更新数据
-        for(int i = 0;i < musicList.size();i++){
-            if (musicList.get(i).getId() == music.getId()){
-                musicList.remove(musicList.get(i));
-                musicList.add(newMusic);
+        musicList = musicList.stream().map(music1 -> {
+            if (music1.getId() == music.getId()){
+                return newMusic;
             }
-        }
-        System.out.println(musicList);
-
-//        musicList = musicList.stream().map(
-//                music ->
-//                {
-//                    if (music.getId() == oldmusic.getId()){
-//                        musicList.remove(music);
-//                        musicList.add(newMusic);
-//                    }
-//                    return music;
-//                }
-//        ).collect(Collectors.toList());
-//
-//        System.out.println(musicList);
-
+            return music1;
+        }).collect(Collectors.toList());
     }
+
+    @DeleteMapping("/musics/{id}")
+    public ResponseEntity<String> delete(@PathVariable int id){
+        try{
+            musicService.remove(id);
+        }catch (Exception exception){
+            return ResponseEntity.status(500).body("出错了!");
+        }
+        return ResponseEntity.ok().body("成功！");
+//        musicList.removeIf(music -> music.getId() == id);
+    }
+
+//    @ExceptionHandler()//只能处理当前的Controller
+//    public ResponseEntity<String> handleException(){
+//
+//    }
 }
