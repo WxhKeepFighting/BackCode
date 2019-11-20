@@ -9,13 +9,15 @@ import java.io.IOException;
 @Component
 public class FileConverter implements Converter<MultipartFile, String > {
 
+    String fileName;
     @Override
     public String convert(MultipartFile multipartFile) {
         try {
-            multipartFile.transferTo(new File("F:\\upload"));
-        } catch (IOException e) {
+            fileName = multipartFile.getOriginalFilename();
+            multipartFile.transferTo(new File("F:\\upload\\"+fileName));
+        } catch (IllegalStateException|IOException e) {
             e.printStackTrace();
         }
-        return "abc.file";
+        return fileName;
     }
 }
