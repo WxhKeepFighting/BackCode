@@ -38,6 +38,7 @@ public class MusicController_T {
         musicList.add(new Music(1, "那个男人", "杨宗纬", true, "好听的歌", LocalDate.now(), null));
         musicList.add(Music.builder().id(2).musicname("华夏").musicauthor("GAI周延").status(true).release_date(LocalDate.now()).description("好听的歌").file(null).build());
         musicList.add(Music.builder().id(3).musicname("画").musicauthor("邓紫棋").status(false).release_date(LocalDate.now()).description("真的好听").file(null).build());
+        musicList.add(Music.builder().id(4).musicname("泡沫").musicauthor("邓紫棋").status(true).release_date(LocalDate.now()).description("真的好听").file(null).build());
     }
 
     @GetMapping("/musics")//API命名方式
@@ -117,15 +118,38 @@ public class MusicController_T {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//                if (!file.exists()){
-//                    file.mkdirs();
-//                }
-//            FileOutputStream fileOut = null;
-//            HttpURLConnection conn = null;
-//            InputStream inputStream = null;
             return ResponseEntity.status(HttpStatus.CREATED).body(resource);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+    @GetMapping("musics/type/{name}")
+    public ResponseEntity<List<Music>> findByName(@PathVariable String name){
+
+        List<Music> type_List = new ArrayList<>();
+
+        musicList = musicList.stream().map(music -> {
+            if (music.getMusicauthor().equals(name)){
+                type_List.add(music);
+                return music;
+            }else {
+                return music;
+            }
+        }).collect(Collectors.toList());
+        if (type_List.size() != 0) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(type_List);
+        }else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+    @GetMapping("musics/{id}")
+    public ResponseEntity<Music> findById(@PathVariable int id){
+        Music Id_music = musicList.stream().filter(music -> music.getId()==id).findFirst().orElse(null);
+        if (Id_music!=null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(Id_music);
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @ExceptionHandler(value = {InvalidMusicIdException.class, FileNotFoundException.class})//只能处理当前的Controller
