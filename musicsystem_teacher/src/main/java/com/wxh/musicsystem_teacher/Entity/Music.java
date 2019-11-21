@@ -27,7 +27,7 @@ public class Music implements Comparable<Music>{
     private boolean status;//音乐状态
     private String description;//音乐描述
     private LocalDate release_date;//发行日期
-    private String file;//描述文件的位置
+    private String file;//描述文件的名称
 
     @Override
     public int compareTo(Music musicm) {

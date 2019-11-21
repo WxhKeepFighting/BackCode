@@ -12,7 +12,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,9 +35,9 @@ public class MusicController_T {
     @Autowired//可以省略
     public MusicController_T(MusicService musicService) {
         this.musicService = musicService;
-        musicList.add(new Music(1, "hello", "wxh", false, "好听的歌", LocalDate.now(), null));
-        musicList.add(Music.builder().id(57).musicname("wxh55").musicauthor("sfsf").status(false).release_date(LocalDate.now()).description("111").file(null).build());
-        musicList.add(Music.builder().id(6).musicname("name01").musicauthor("sfsf").status(false).release_date(LocalDate.now()).description("111").file(null).build());
+        musicList.add(new Music(1, "那个男人", "杨宗纬", true, "好听的歌", LocalDate.now(), null));
+        musicList.add(Music.builder().id(2).musicname("华夏").musicauthor("GAI周延").status(true).release_date(LocalDate.now()).description("好听的歌").file(null).build());
+        musicList.add(Music.builder().id(3).musicname("画").musicauthor("邓紫棋").status(false).release_date(LocalDate.now()).description("真的好听").file(null).build());
     }
 
     @GetMapping("/musics")//API命名方式
@@ -51,8 +52,8 @@ public class MusicController_T {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getFieldErrors());
         }
 
-        for (int i = 0;i<musicList.size();i++){
-            if (musicList.get(i).getId() == music.getId()){
+        for (int i = 0; i < musicList.size(); i++) {
+            if (musicList.get(i).getId() == music.getId()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
             }
         }
@@ -93,10 +94,38 @@ public class MusicController_T {
         return ResponseEntity.ok().body("成功！");
     }
 
-    @GetMapping("/musics/{id}/attachment")
+    @GetMapping("/musics/attachment/{id}")
     public ResponseEntity<Resource> download(@PathVariable int id) {
-        Resource resource = new FileSystemResource("F:\\upload");
-        return ResponseEntity.status(HttpStatus.CREATED).body(resource);
+        Music ObjectMusic = musicList.stream().filter(
+                music -> music.getId() == id
+        ).findFirst().orElse(null);
+        if (ObjectMusic != null) {
+            String FileName = ObjectMusic.getFile();
+            System.out.println("文件名为" + FileName);
+            Resource resource = new FileSystemResource("F:\\upload\\" + FileName);
+            try {
+                File up_file = resource.getFile();//获得下载文件
+                File down_file = new File("F:\\download\\"+FileName);//创建文件然后再向指定文件夹里面写入文件
+                FileWriter fw = new FileWriter(down_file);
+                FileReader fr = new FileReader(up_file);
+                int i;
+                while ((i = fr.read())!=-1){
+                    fw.write(i);
+                }
+                fw.close();
+                fr.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//                if (!file.exists()){
+//                    file.mkdirs();
+//                }
+//            FileOutputStream fileOut = null;
+//            HttpURLConnection conn = null;
+//            InputStream inputStream = null;
+            return ResponseEntity.status(HttpStatus.CREATED).body(resource);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @ExceptionHandler(value = {InvalidMusicIdException.class, FileNotFoundException.class})//只能处理当前的Controller
