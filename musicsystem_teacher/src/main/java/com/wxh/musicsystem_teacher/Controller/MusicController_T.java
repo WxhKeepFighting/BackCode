@@ -38,7 +38,7 @@ public class MusicController_T {
         musicList.add(new Music(1, "那个男人", "杨宗纬", true, "好听的歌", LocalDate.now(), null));
         musicList.add(Music.builder().id(2).musicname("华夏").musicauthor("GAI周延").status(true).release_date(LocalDate.now()).description("好听的歌").file(null).build());
         musicList.add(Music.builder().id(3).musicname("画").musicauthor("邓紫棋").status(false).release_date(LocalDate.now()).description("真的好听").file(null).build());
-        musicList.add(Music.builder().id(4).musicname("泡沫").musicauthor("邓紫棋").status(true).release_date(LocalDate.now()).description("真的好听").file(null).build());
+        musicList.add(Music.builder().id(4).musicname("泡沫").musicauthor("邓紫棋").status(true).release_date(LocalDate.now()).description("真的好听").file("ab.txt").build());
     }
 
     @GetMapping("/musics")//API命名方式
@@ -53,7 +53,7 @@ public class MusicController_T {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors.getFieldErrors());
         }
 
-        for (int i = 0; i < musicList.size(); i++) {
+        for (int i = 0; i < musicList.size(); i++) {//不能有重复项出现
             if (musicList.get(i).getId() == music.getId()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
             }
@@ -95,7 +95,7 @@ public class MusicController_T {
         return ResponseEntity.ok().body("成功！");
     }
 
-    @GetMapping("/musics/attachment/{id}")
+    @GetMapping("/musics/attachment/{id}")//点击前端链接获得请求
     public ResponseEntity<Resource> download(@PathVariable int id) {
         Music ObjectMusic = musicList.stream().filter(
                 music -> music.getId() == id
@@ -107,8 +107,8 @@ public class MusicController_T {
             try {
                 File up_file = resource.getFile();//获得下载文件
                 File down_file = new File("F:\\download\\"+FileName);//创建文件然后再向指定文件夹里面写入文件
-                FileWriter fw = new FileWriter(down_file);
-                FileReader fr = new FileReader(up_file);
+                FileOutputStream fw = new FileOutputStream(down_file);
+                FileInputStream fr = new FileInputStream(up_file);
                 int i;
                 while ((i = fr.read())!=-1){
                     fw.write(i);
@@ -143,11 +143,15 @@ public class MusicController_T {
     }
 
     @GetMapping("musics/{id}")
-    public ResponseEntity<Music> findById(@PathVariable int id){
+    public ResponseEntity<List<Music>> findById(@PathVariable int id){
+        List<Music> id_List = new ArrayList<>();
         Music Id_music = musicList.stream().filter(music -> music.getId()==id).findFirst().orElse(null);
         if (Id_music!=null){
-            return ResponseEntity.status(HttpStatus.CREATED).body(Id_music);
+            System.out.println("查找成功"+Id_music.getMusicname());
+            id_List.add(Id_music);
+            return ResponseEntity.status(HttpStatus.CREATED).body(id_List);
         }else {
+            System.out.println("查找失败");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
