@@ -21,10 +21,10 @@ public class Music implements Comparable<Music>{
     @Min(1)//最小值为1
     private int id;//唯一表示
     @NotBlank// !="" || !=null
-    @Size(max = 20,min = 5)
     private String musicname;//音乐名称
     private String musicauthor;//音乐作者
     private boolean status;//音乐状态
+    @Size(max = 20,min = 5)
     private String description;//音乐描述
     private LocalDate release_date;//发行日期
     private String file;//描述文件的名称
