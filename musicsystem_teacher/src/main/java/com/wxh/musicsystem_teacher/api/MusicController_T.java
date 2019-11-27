@@ -1,7 +1,8 @@
 package com.wxh.musicsystem_teacher.Controller;
 
 import com.wxh.musicsystem_teacher.Entity.Music;
-import com.wxh.musicsystem_teacher.InvalidMusicIdException;
+import com.wxh.musicsystem_teacher.domain.InvalidMusicIdException;
+import com.wxh.musicsystem_teacher.domain.MusicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
