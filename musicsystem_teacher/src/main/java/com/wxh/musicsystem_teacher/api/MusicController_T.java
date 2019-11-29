@@ -1,6 +1,6 @@
-package com.wxh.musicsystem_teacher.Controller;
+package com.wxh.musicsystem_teacher.api;
 
-import com.wxh.musicsystem_teacher.Entity.Music;
+import com.wxh.musicsystem_teacher.domain.Music;
 import com.wxh.musicsystem_teacher.domain.InvalidMusicIdException;
 import com.wxh.musicsystem_teacher.domain.MusicService;
 import lombok.extern.slf4j.Slf4j;

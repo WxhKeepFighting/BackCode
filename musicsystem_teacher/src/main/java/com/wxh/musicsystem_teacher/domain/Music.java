@@ -1,4 +1,4 @@
-package com.wxh.musicsystem_teacher.Entity;
+package com.wxh.musicsystem_teacher.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

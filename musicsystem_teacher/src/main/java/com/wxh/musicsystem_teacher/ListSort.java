@@ -1,7 +1,6 @@
 package com.wxh.musicsystem_teacher;
 
-import com.wxh.musicsystem_teacher.Entity.Music;
-import org.apache.logging.log4j.util.PropertySource;
+import com.wxh.musicsystem_teacher.domain.Music;
 import org.springframework.beans.factory.support.ManagedList;
 
 import java.time.LocalDate;

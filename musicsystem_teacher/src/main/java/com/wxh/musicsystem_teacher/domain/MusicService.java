@@ -1,4 +1,4 @@
-package com.wxh.musicsystem_teacher.Controller;
+package com.wxh.musicsystem_teacher.domain;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.wxh.musicsystem_teacher.Controller;
+package com.wxh.musicsystem_teacher.api;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
