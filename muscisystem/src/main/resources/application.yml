@@ -3,10 +3,13 @@ spring:
     active: a
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT # serverTimezone=GMT这是设置时区
+    url: jdbc:mysql://127.0.0.1:3306/link01?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT # serverTimezone=GMT这是设置时区
     username: root
     password: 123456
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    database: mysql
+mypro:
+  pathname: "F:\\upload\\"

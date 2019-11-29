@@ -9,5 +9,5 @@ import java.util.List;
 ，来实现和数据库交互*/
 public interface MusicRepository extends JpaRepository<Music, Integer> {
     //idea能自动识别findBy后面的内容是否能在数据库中找到？
-    List<Music> findBymusictype(String musictype);
+    List<Music> findBymusicauthor(String musicauthor);
 }

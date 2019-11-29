@@ -27,18 +27,18 @@ public class MusicService {
     @Transactional//事务管理标签
     public void insertTwo(){
         Music musicA = new Music();
-        musicA.setMusicauthor("邓悦");
-        musicA.setMusicname("大耳朵图图");
-        musicA.setMusictype("儿童");
+        musicA.setMusicauthor("冷雨夜");
+        musicA.setMusicname("刘德华");
+        musicA.setComment("一首好听的歌");
 //        musicA.setData("2019/10/27");
         musicA.setStatus(true);
         musicRepository.saveAndFlush(musicA);
         Music musicB = new Music();
         musicB.setMusicauthor("汪骁虎");
         musicB.setMusicname("那个男人");
-        musicB.setMusictype("流行音乐");
+        musicB.setComment("流行音乐");
 //        musicB.setData("2019/10/27");
-        musicB.setId(1);
+//        musicB.setId(1);
         musicB.setStatus(true);
         musicRepository.saveAndFlush(musicB);
     }
