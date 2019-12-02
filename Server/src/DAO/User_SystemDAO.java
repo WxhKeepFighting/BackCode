@@ -1,17 +1,19 @@
 package DAO;
 
 import Entity.User;
+import Entity.User_system;
 import util.DBCon;
 
-import java.sql.*;
-
-public class UserDao {
-
-    /*
-     * 验证用户登录
-     * 用的表是user_system
-     * */
-    public static String user_login(User u) {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+/**
+ * 验证用户登录
+ * 用的表是user_system
+ * 需要通过socket来实现这个操作
+ * * */
+public class User_SystemDAO {
+    public static String user_login(User_system u) {
 
         String bool = "false";
         String u_password = u.getS_password();

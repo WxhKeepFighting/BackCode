@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class TCPClient {
+public class TCPClient01 {
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket("127.0.0.1",65000);
         OutputStream outputStream = socket.getOutputStream();
