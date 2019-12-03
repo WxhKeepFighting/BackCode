@@ -31,20 +31,20 @@ public class SpecialService implements Runnable {
             System.out.println("客户端发送消息为" + content);
             String message[] = content.split(",");
             String id = message[0];
-            System.out.println("执行的操作id为"+id);
-            if (id.equals("登录验证")){
+            System.out.println("执行的操作id为" + id);
+            if (id.equals("登录验证")) {
                 String s_id = message[1];
                 String s_password = message[2];
-                loginVerification(s_id,s_password);
+                loginVerification(s_id, s_password);
             }
-            if (id.equals("开始服务")){
-                String mission_id = message[1];//获取任务id
+            if (id.equals("开始服务")) {
+                String mission_id = message[1];//获取任务id(id号自动生成的)
                 String service_status = message[2];//获取状态码
                 String service_stime = message[3];//获取起始时间
                 String service_spic = message[4];//获取起始照片
-                bService(mission_id,service_status,service_stime,service_spic);
+                bService(mission_id, service_status, service_stime, service_spic);
             }
-            if (id.equals("结束服务")){
+            if (id.equals("结束服务")) {
                 String mission_id = message[1];//获取任务id
                 String service_status = message[2];//获取状态码
                 String service_etime = message[3];//获取结束时间
@@ -58,10 +58,10 @@ public class SpecialService implements Runnable {
 
     //关闭流和socket
     private void close() throws IOException {
-        if (dataInputStream != null){
+        if (dataInputStream != null) {
             dataOutputStream.close();
         }
-        if (dataOutputStream != null){
+        if (dataOutputStream != null) {
             dataInputStream.close();
         }
         if (socket != null) {
