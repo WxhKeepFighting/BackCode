@@ -13,6 +13,11 @@ public class User_system {
         this.active = active;
     }
 
+    public User_system(String s_id, String s_password) {
+        this.s_id = s_id;
+        this.s_password = s_password;
+    }
+
     public String getS_id() {
         return s_id;
     }
