@@ -12,12 +12,12 @@ import java.sql.Date;//确保格式正确
 
 @Data
 @AllArgsConstructor
-@Entity
-@Table
+@Entity//表明实体类
+//@Table(name = "Musicsinfo")//指定表
 public class Music {
     /*@Id注释一定要在id上面，下面数据的顺序最好和数据库中的顺序一样避免不必要的错误*/
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id//表示主键
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//自增
     @Column(name = "id", nullable = false)
     private int id;//唯一表示
     @NotBlank
@@ -30,6 +30,8 @@ public class Music {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date release_date;//发行日期
     private String file;//资源
+//    @JoinColumn(name = course_id)
+//    @OneToMany(cascade = CascadeType.PERSIST, mappedBy =)
 
     //必须要有构造函数
     public Music(){}

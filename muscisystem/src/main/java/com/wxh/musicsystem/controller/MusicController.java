@@ -4,8 +4,17 @@ import com.wxh.musicsystem.dao.MusicRepository;
 import com.wxh.musicsystem.entity.Music;
 import com.wxh.musicsystem.service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +27,10 @@ public class MusicController{
     MusicRepository musicRepository;
     @Autowired
     MusicService musicService;
+    @Value("${mypro.download_pathname}")
+    private String down_path;
+    @Value("${mypro.upload_pathname}")
+    private String up_path;
 
     //获取所有歌曲内容
     @GetMapping(value = "/musics")
@@ -39,7 +52,7 @@ public class MusicController{
 //    }
     //按照歌手名称来查找,注意由于同样是Get请求，所以请求地址栏发生了改变，同时参数为String类型
     @GetMapping("/musics/type/{name}")
-    public List<Music> musicListByMusicType(@PathVariable("name") String name){
+    public List<Music> musicListByMusicName(@PathVariable("name") String name){
         return musicRepository.findBymusicauthor(name);
     }
 
@@ -58,25 +71,57 @@ public class MusicController{
     //根据id删除
     @DeleteMapping(value = "/musics/{id}")
     public void musicsDelete(@PathVariable("id") Integer id){
-        musicRepository.deleteById(id);
+        musicService.deleteOne(id);
     }
 
     //根据id更新
     @PutMapping(value = "/musics/{id}")
     public Music musicUpdate(@PathVariable("id") Integer id, Music music){
-
+        Music newMusic = null;
         /**
          * 1、先找到老数据
          * 2、在旧的数据不为空的情况下，然后再更新数据
         */
-        return musicRepository.saveAndFlush(music);
+        Optional<Music> byId = musicRepository.findById(id);
+        if(byId.isPresent()){
+            newMusic = musicRepository.saveAndFlush(music);
+        }
+        return newMusic;
     }
 
-    @PostMapping("/musics/two")
-    public void musicTwo(){
-        musicService.insertTwo();
+    @GetMapping("/musics/attachment/{id}")
+    public ResponseEntity<String> download(@PathVariable int id){
+        Optional<Music> byId = musicRepository.findById(id);
+        if (byId.isPresent()){
+            Music music = byId.get();
+            String fileName = music.getFile();
+            Resource resource = new FileSystemResource(up_path+fileName);
+            try {
+                File up_file = resource.getFile();
+                File down_file = new File(down_path+fileName);
+                FileInputStream fr = new FileInputStream(up_file);
+                FileOutputStream fw = new FileOutputStream(down_file);
+                int i;
+                while ((i = fr.read())!=-1){
+                    fw.write(i);//读一次写一次
+                }
+                fr.close();
+                fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body("下载成功");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("下载失败");
+    }
+    @DeleteMapping("musics/{all_id}")
+    public void deletebatch(){
+
     }
 
-//    @PostMapping(value = "/upload")
-//    public Result
+//    @PostMapping("/musics/two")
+//    public void musicTwo(){
+//        musicService.insertTwo();
+//    }
+
 }

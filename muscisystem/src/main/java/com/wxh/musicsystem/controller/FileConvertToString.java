@@ -12,7 +12,7 @@ import java.io.IOException;
 @Component
 public class FileConvertToString implements Converter<MultipartFile, String> {
 
-    @Value("${mypro.pathname}")
+    @Value("${mypro.upload_pathname}")
     private String pathname;
 
     @Override
