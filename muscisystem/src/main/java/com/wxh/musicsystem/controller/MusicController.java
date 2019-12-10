@@ -114,9 +114,10 @@ public class MusicController{
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("下载失败");
     }
-    @DeleteMapping("musics/{all_id}")
-    public void deletebatch(){
 
+    @DeleteMapping("musics/batch_delete/{all_id}")
+    public void deletebatch(@PathVariable List<Integer> all_id){
+        musicService.deleteMany(all_id);
     }
 
 //    @PostMapping("/musics/two")
