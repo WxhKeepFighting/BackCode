@@ -1,6 +1,6 @@
 package com.wxh.musicsystem.dao;
 
-import com.wxh.musicsystem.entity.Music;
+import com.wxh.musicsystem.domain.Music;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -9,10 +9,11 @@ import java.util.List;
 ，来实现和数据库交互*/
 public interface MusicRepository extends JpaRepository<Music, Integer> {
     //idea能自动识别findBy后面的内容是否能在数据库中找到？
-    List<Music> findBymusicauthor(String musicauthor);
+//    Music findByName(String name);
+    List<Music> findByAuthor(String author);
 //    List<Music> findByCommentGreaterThan
-    int countBymusicauthor(String musicauthor);
-    boolean existsBymusicauthor(String musicauthor);
-    boolean deleteBymusicauthor(String musicauthor);
-    Music findOneBymusicauthor(String musicauthor);
+//    int countBymusicauthor(String musicauthor);
+//    boolean existsBymusicauthor(String musicauthor);
+//    boolean deleteBymusicauthor(String musicauthor);
+//    Music findOneBymusicauthor(String musicauthor);
 }

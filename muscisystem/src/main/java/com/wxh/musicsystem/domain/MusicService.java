@@ -1,7 +1,6 @@
-package com.wxh.musicsystem.service;
+package com.wxh.musicsystem.domain;
 
 import com.wxh.musicsystem.dao.MusicRepository;
-import com.wxh.musicsystem.entity.Music;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class MusicService {
 
     @Autowired
-    private MusicRepository musicRepository;
+    private MusicRepository musicRepository;//还可以通过构造方法传参
 
     public void deleteOne(int id) {
         Optional<Music> byId = musicRepository.findById(id);
@@ -47,32 +46,31 @@ public class MusicService {
         );
     }
 
+    public boolean addMusics(Music... musics) {
+        for (Music music : musics) {
+            Music music1 = musicRepository.save(music);
+            if (music1.getName() == ""){
+                return false;
+            }
+        }
+        return true;
+    }
 
-//   public MusicService(MusicRepository musicRepository){
-//       this.musicRepository = musicRepository;
-//   }
+    public List<Music> findAll() {
+        return musicRepository.findAll();
+    }
 
+    public Optional<Music> findById(int id) {
+        Optional<Music> byId = musicRepository.findById(id);
+        if (byId.isPresent()) {
+            return byId;
+        } else {
+            return Optional.empty();
+        }
+    }
 
-//    public void insertTwo(Music... music){
-//        for (Music m:
-//             music) {
-//            musicRepository.save(m);
-//        }
-//
-//        Music musicA = new Music();
-//        musicA.setMusicauthor("冷雨夜");
-//        musicA.setMusicname("刘德华");
-//        musicA.setComment("一首好听的歌");
-////        musicA.setData("2019/10/27");
-//        musicA.setStatus(true);
-//        musicRepository.saveAndFlush(musicA);
-//        Music musicB = new Music();
-//        musicB.setMusicauthor("汪骁虎");
-//        musicB.setMusicname("那个男人");
-//        musicB.setComment("流行音乐");
-////        musicB.setData("2019/10/27");
-////        musicB.setId(1);
-//        musicB.setStatus(true);
-//        musicRepository.saveAndFlush(musicB);
-//    }
+    public List<Music> findBymusicauthor(String author) {
+        return musicRepository.findByAuthor(author);
+    }
+
 }

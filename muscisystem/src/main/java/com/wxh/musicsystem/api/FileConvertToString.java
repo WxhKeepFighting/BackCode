@@ -1,4 +1,4 @@
-package com.wxh.musicsystem.controller;
+package com.wxh.musicsystem.api;
 
 
 import org.springframework.beans.factory.annotation.Value;
