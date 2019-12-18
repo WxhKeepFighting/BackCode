@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,8 @@ import java.util.Optional;
 public class MusicController{
     @Autowired
     MusicService musicService;
+    @Autowired
+    MusicRepository repository;
     @Value("${mypro.download_pathname}")
     private String down_path;
     @Value("${mypro.upload_pathname}")
@@ -122,4 +126,11 @@ public class MusicController{
         musicService.deleteMany(all_id);
     }
 
+    @GetMapping(path = "/page")
+    public Page<Music> getAllMusicByPageAndSort(Integer currentPage,
+                                                Integer pageSize){
+        Sort sort = Sort.by(Sort.Direction.ASC,"id");
+        PageRequest pageRequest = PageRequest.of(currentPage-1, pageSize, sort);
+        return repository.findAll(pageRequest);
+    }
 }

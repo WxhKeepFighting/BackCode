@@ -49,7 +49,7 @@ public class MusicService {
     public boolean addMusics(Music... musics) {
         for (Music music : musics) {
             Music music1 = musicRepository.save(music);
-            if (music1.getName() == ""){
+            if (music1.getName().equals("")){
                 return false;
             }
         }
@@ -62,7 +62,8 @@ public class MusicService {
 
     public Optional<Music> findById(int id) {
         Optional<Music> byId = musicRepository.findById(id);
-        if (byId.isPresent()) {
+        boolean present = byId.isPresent();
+        if (present) {
             return byId;
         } else {
             return Optional.empty();
@@ -71,6 +72,11 @@ public class MusicService {
 
     public List<Music> findBymusicauthor(String author) {
         return musicRepository.findByAuthor(author);
+    }
+
+    public void findByPage(Integer currentPage,
+                            Integer pageSize,
+                            String sortColumn){
     }
 
 }

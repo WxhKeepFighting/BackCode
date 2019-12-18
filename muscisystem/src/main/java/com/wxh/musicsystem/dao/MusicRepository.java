@@ -11,6 +11,7 @@ public interface MusicRepository extends JpaRepository<Music, Integer> {
     //idea能自动识别findBy后面的内容是否能在数据库中找到？
 //    Music findByName(String name);
     List<Music> findByAuthor(String author);
+
 //    List<Music> findByCommentGreaterThan
 //    int countBymusicauthor(String musicauthor);
 //    boolean existsBymusicauthor(String musicauthor);
