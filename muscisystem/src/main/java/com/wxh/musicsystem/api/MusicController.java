@@ -126,9 +126,9 @@ public class MusicController{
         musicService.deleteMany(all_id);
     }
 
-    @GetMapping(path = "/page")
-    public Page<Music> getAllMusicByPageAndSort(Integer currentPage,
-                                                Integer pageSize){
+    @GetMapping(path = "musics/page/{currentPage}/{pageSize}")
+    public Page<Music> getAllMusicByPageAndSort(@PathVariable("currentPage") Integer currentPage,
+                                                @PathVariable("pageSize") Integer pageSize){
         Sort sort = Sort.by(Sort.Direction.ASC,"id");
         PageRequest pageRequest = PageRequest.of(currentPage-1, pageSize, sort);
         return repository.findAll(pageRequest);
