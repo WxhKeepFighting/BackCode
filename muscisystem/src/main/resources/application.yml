@@ -11,6 +11,7 @@ spring:
       ddl-auto: update
     show-sql: true
     database: mysql
+    open-in-view: false
   servlet:
     multipart:
       max-file-size: 10MB
