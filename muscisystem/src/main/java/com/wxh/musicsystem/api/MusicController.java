@@ -37,7 +37,7 @@ public class MusicController{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bindingResult.getFieldError().getField()+","+bindingResult.getFieldError().getDefaultMessage());
         }
         musicService.addMusics(music);
-        return ResponseEntity.status(400).body("success");
+        return ResponseEntity.status(HttpStatus.CREATED).body("success");
     }
 
     // 按照歌手名称来查找,注意由于同样是Get请求，所以请求地址栏发生了改变，同时参数为String类型
@@ -80,6 +80,7 @@ public class MusicController{
         return AjaxResponse.success();
     }
 
+    //分页显示
     @GetMapping(path = "musics/page/{currentPage}/{pageSize}")
     public @ResponseBody AjaxResponse getAllMusicByPageAndSort(@PathVariable("currentPage") Integer currentPage,
                                                 @PathVariable("pageSize") Integer pageSize){

@@ -46,6 +46,7 @@ public class MusicService {
     @Value("${mypro.upload_pathname}")
     private String up_path;
 
+    //按id删除
     public void deleteOne(int id) {
         Optional<Music> byId = musicRepository.findById(id);
         if (byId.isPresent()) {
@@ -59,6 +60,7 @@ public class MusicService {
         }
     }
 
+    //批量删除
     public void deleteMany(List<Integer> id_List) {
         id_List.forEach(id -> {
                     Optional<Music> byId = musicRepository.findById(id);
@@ -69,16 +71,19 @@ public class MusicService {
         );
     }
 
+    //添加
     public void addMusics(Music... musics) {
         for (Music music : musics) {
             musicRepository.save(music);
         }
     }
 
+    //查询所有
     public List<Music> findAll() {
         return musicRepository.findAll();
     }
 
+    //按id查询
     public List<Music> findById(int id) throws CustomException {
         List<Music> list = new ArrayList<>();
         Optional<Music> byId = musicRepository.findById(id);
@@ -90,6 +95,7 @@ public class MusicService {
         return list;
     }
 
+    //按姓名查找
     public List<Music> findBymusicauthor(String author) throws CustomException {
         if (author.equals("")) {
             throw new CustomException(CustomExceptionType.USER_INPUT_ERROR, "输入的歌手姓名不能为空，请正确输入");
@@ -102,6 +108,7 @@ public class MusicService {
         }
     }
 
+    //更新
     public void musicUpdate(int id, Music music) throws CustomException{
         if (music == null){
             throw new CustomException(CustomExceptionType.USER_INPUT_ERROR,"更新的对象不能为空");
@@ -111,13 +118,14 @@ public class MusicService {
         }
     }
 
-
+    //分页显示
     public Page<Music> findByPage(Integer currentPage, Integer pageSize) {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(currentPage - 1, pageSize, sort);
         return musicRepository.findAll(pageRequest);
     }
 
+    //文件下载
     public void download(int id) throws CustomException{
         Optional<Music> byId = musicRepository.findById(id);
         if (byId.isPresent()){
